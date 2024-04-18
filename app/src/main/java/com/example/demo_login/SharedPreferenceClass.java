@@ -3,128 +3,49 @@ package com.example.demo_login;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.demo_login.model.ModelLoginCredentials;
+
 public class SharedPreferenceClass {
 
     public Context context;
+    public final String prefName = "My-pref";
+    public final String defValue = "";
+    public final String Key_Login_UserName = "credentialUsername";
+    public final String Key_Login_Password = "credentialPassword";
+    public final String Key_Login_IsSaved = "saveCredential";
+    SharedPreferences sharedPref;
 
     public SharedPreferenceClass(Context context) {
         this.context = context;
+        sharedPref = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
     }
 
-    public final String prefName = "My-pref";
-    public final String serializableKey = "serializableData";
-    public final String parcelableKey = "parcelableData";
-    public final String defValue = "";
-    public final String idKey = "Id";
-    public final String nameKey = "Name";
-    public final String genderKey = "Gender";
-    public final String hobbyKey = "Hobby";
-    public final String credentialUnmKey = "credentialUsername";
-    public final String credentialPwdKey = "credentialPassword";
-    public final String saveCredentialKey = "saveCredential";
-    SharedPreferences sharedPref;
 
-    public void getSharedPreferencesModeName(){
-        sharedPref= context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
-    }
-
-    public void putId(int idValue) {
-        getSharedPreferencesModeName();
+    public void setLoginCredentials(String credentialUserName, String credentialPassword) {
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(idKey, idValue);
+        editor.putBoolean(Key_Login_IsSaved, true);
+        editor.putString(Key_Login_UserName, credentialUserName);
+        editor.putString(Key_Login_Password, credentialPassword);
         editor.apply();
     }
 
-    public int getInt(int idValue) {
-        getSharedPreferencesModeName();
-        return sharedPref.getInt(idKey, idValue);
-    }
-
-    public void putString(String nameValue) {
-        getSharedPreferencesModeName();
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(nameKey, nameValue);
-        editor.apply();
-    }
-
-    public String getString(String nameValue) {
-        getSharedPreferencesModeName();
-        return sharedPref.getString(nameKey, nameValue);
-    }
-
-    public void putBoolean(boolean genderValue) {
-        getSharedPreferencesModeName();
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(genderKey, genderValue);
-        editor.apply();
-    }
-
-    public boolean getBoolean(boolean genderValue) {
-        getSharedPreferencesModeName();
-        return sharedPref.getBoolean(genderKey, genderValue);
-    }
-
-    public void putArraylist(String hobbyValue) {
-        getSharedPreferencesModeName();
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(hobbyKey, hobbyValue);
-        editor.apply();
-    }
-
-    public String getArraylist(String hobbyValue) {
-        getSharedPreferencesModeName();
-        return sharedPref.getString(hobbyKey, hobbyValue);
-    }
-
-    public void putSerializableString(String serializableValue) {
-        getSharedPreferencesModeName();
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(serializableKey, serializableValue);
-        editor.apply();
-    }
-
-    public String getSerializableString() {
-        getSharedPreferencesModeName();
-        return sharedPref.getString(serializableKey, defValue);
-    }
-
-    public void putParcelableString(String parcelableValue) {
-        getSharedPreferencesModeName();
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(parcelableKey, parcelableValue);
-        editor.apply();
-    }
-
-    public String getParcelableString() {
-        getSharedPreferencesModeName();
-        return sharedPref.getString(parcelableKey, defValue);
-    }
-
-    public void putCredentials(String credentialUserName, String credentialPassword) {
-        getSharedPreferencesModeName();
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(saveCredentialKey, true);
-        editor.putString(credentialUnmKey, credentialUserName);
-        editor.putString(credentialPwdKey, credentialPassword);
-        editor.apply();
-    }
-
-    public String[] getCredentials() {
-        getSharedPreferencesModeName();
-        boolean isRemember = sharedPref.getBoolean(saveCredentialKey, false);
+    public ModelLoginCredentials getLoginCredentials() {
+        boolean isRemember = sharedPref.getBoolean(Key_Login_IsSaved, false);
         String username = defValue;
         String password = defValue;
         if (isRemember) {
-            username = sharedPref.getString(credentialUnmKey, defValue);
-            password = sharedPref.getString(credentialPwdKey, defValue);
+            username = sharedPref.getString(Key_Login_UserName, defValue);
+            password = sharedPref.getString(Key_Login_Password, defValue);
         }
-        return new String[]{username, password};
+        ModelLoginCredentials loginCredentials = new ModelLoginCredentials();
+        loginCredentials.setUserName(username);
+        loginCredentials.setPassword(password);
+        return loginCredentials;
     }
-
-    public void clearPreferences() {
-        getSharedPreferencesModeName();
+    public void clearLoginCredentials(){
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.clear();
+        editor.remove(Key_Login_UserName);
+        editor.remove(Key_Login_Password);
         editor.apply();
     }
 }

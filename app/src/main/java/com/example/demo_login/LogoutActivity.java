@@ -20,11 +20,12 @@ public class LogoutActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sharedPreferences.clearLoginCredentials();
                 Intent i = new Intent(LogoutActivity.this, MainActivity.class);
                 startActivity(i);
-                sharedPreferences.clearPreferences();
                 finish();
             }
         });
+
     }
 }

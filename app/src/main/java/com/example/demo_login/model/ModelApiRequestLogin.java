@@ -1,8 +1,8 @@
-package com.example.demo_login;
+package com.example.demo_login.model;
 
-public class LoginRequestModel {
+public class ModelApiRequestLogin {
     String username,password;
-    public LoginRequestModel(String username, String password) {
+    public ModelApiRequestLogin(String username, String password) {
         this.username = username;
         this.password = password;
     }
